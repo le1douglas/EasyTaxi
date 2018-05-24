@@ -3,6 +3,7 @@ package douglas.leone.easytaxi.ui.mainActivity.mapFragment;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -41,17 +42,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private MapViewModel viewModel;
     private GoogleMap googleMap;
     private FusedLocationProviderClient mFusedLocationClient;
-    private LocationCallback mLocationCallback = new LocationCallback() {
-        @Override
-        public void onLocationResult(LocationResult locationResult) {
-            if (locationResult == null) {
-                return;
-            }
-            for (Location location : locationResult.getLocations()) {
-                Log.d(TAG, "onLocationResult: " + location);
-              }
-        }
-    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -93,38 +83,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap map) {
         Log.d(TAG, "onMapReady: ");
         googleMap = map;
-        startPositionRequest();
+        getLastPosition();
     }
 
-    private void startPositionRequest() {
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            Log.d(TAG, "startPositionRequest: check self permission passed");
-            googleMap.setMyLocationEnabled(true);
-
-            mFusedLocationClient.requestLocationUpdates(mLocationRequest,
-                    mLocationCallback,
-                    null /* Looper */);
-        }else{
-            googleMap.setMyLocationEnabled(false);
-            requestPermission();
-        }
-    }
-
-    private void stopPositionRequest() {
-        mFusedLocationClient.removeLocationUpdates(mLocationCallback);
-
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        stopPositionRequest();
-    }
 
     private void requestPermission() {
         Log.d(TAG, "requestPermission: ");
-        ActivityCompat.requestPermissions(getActivity(),
+        requestPermissions(
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
                 PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
     }
@@ -137,7 +102,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Log.d(TAG, "onRequestPermissionsResult: permission granted");
-                startPositionRequest();
+                getLastPosition();
             } else {
                 Log.d(TAG, "onRequestPermissionsResult: permission not granted");
                 Toast.makeText(getContext(), "You won't be able to use basic features", Toast.LENGTH_SHORT).show();
@@ -148,12 +113,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private void getLastPosition() {
         Log.d(TAG, "getLastPosition: ");
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (checkLocationPermission(getContext())){
             Log.d(TAG, "getLastPosition: check self permission passed");
             mFusedLocationClient.getLastLocation()
                     .addOnSuccessListener(new OnSuccessListener<Location>() {
-                        @SuppressLint("MissingPermission")
                         @Override
                         public void onSuccess(Location location) {
                             Log.d(TAG, "onSuccess: but location is null");
@@ -161,6 +124,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                             if (location != null) {
                                 Log.d(TAG, "onSuccess: " + location);
                                 // Logic to handle location object
+                                if (checkLocationPermission(getContext()))
                                 googleMap.setMyLocationEnabled(true);
                             }
                         }
@@ -170,5 +134,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             requestPermission();
         }
 
+    }
+
+    private static boolean checkLocationPermission(Context context){
+        boolean result;
+        result = ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        Log.d(TAG, "checkLocationPermission: " + result);
+
+        return result;
     }
 }
