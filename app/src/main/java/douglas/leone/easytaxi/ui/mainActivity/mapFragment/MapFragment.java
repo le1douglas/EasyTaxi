@@ -85,7 +85,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-
     /**
      * Manipulates the map when it's available.
      * This callback is triggered when the map is ready to be used.
