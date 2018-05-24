@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/mapFragment">
+
+    <fragment
+        android:id="@+id/endFragment"
+        android:name="douglas.leone.easytaxi.ui.mainActivity.settingsFragment.EndFragment"
+        android:label="fragment_end"
+        tools:layout="@layout/fragment_end" />
+
+
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="douglas.leone.easytaxi.ui.mainActivity.mapFragment.MapFragment"
+        android:label="fragment_map"
+        tools:layout="@layout/fragment_map" >
+
+        <action
+            android:id="@+id/action_mapFragment_to_loginActivity"
+            app:destination="@id/loginActivity" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/startFragment"
+        android:name="douglas.leone.easytaxi.ui.mainActivity.historyFragment.StartFragment"
+        android:label="fragment_start"
+        tools:layout="@layout/fragment_start" />
+    <activity
+        android:id="@+id/loginActivity"
+        android:name="douglas.leone.easytaxi.ui.loginActivity.LoginActivity"
+        android:label="activity_login"
+        tools:layout="@layout/login_activity" />
+
+
+</navigation>

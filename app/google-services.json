@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "421098042913",
+    "firebase_url": "https://easy-taxi-6be7d.firebaseio.com",
+    "project_id": "easy-taxi-6be7d",
+    "storage_bucket": "easy-taxi-6be7d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:421098042913:android:f30b9ba03c97eaf5",
+        "android_client_info": {
+          "package_name": "douglas.leone.easytaxi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "421098042913-fuds9dg20sjs7vgqroq2e4d77i2ogdb4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "douglas.leone.easytaxi",
+            "certificate_hash": "d47ac5d780ba1105def3079b2eaf9a6eb568e0e5"
+          }
+        },
+        {
+          "client_id": "421098042913-rrk04cacv7p9rvs2l9opplvr6rn35rd9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3n4Ye0IOhjCIP8qsc98J3pzOsZyvr_NE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "421098042913-rrk04cacv7p9rvs2l9opplvr6rn35rd9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@id/startFragment"
+        android:icon="@mipmap/ic_launcher"
+        android:title="tab1"
+        android:enabled="true"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@id/mapFragment"
+        android:icon="@mipmap/ic_launcher"
+        android:title="tab2"
+        android:enabled="true"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@id/endFragment"
+        android:icon="@mipmap/ic_launcher"
+        android:title="tab3"
+        android:enabled="true"
+        app:showAsAction="ifRoom"/>
+</menu>
