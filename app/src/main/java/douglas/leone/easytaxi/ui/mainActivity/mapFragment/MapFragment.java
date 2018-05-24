@@ -38,7 +38,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
 
     private static final String TAG = "LE1_MapFragment";
-    LocationRequest mLocationRequest = new LocationRequest();
     private MapViewModel viewModel;
     private GoogleMap googleMap;
     private FusedLocationProviderClient mFusedLocationClient;
@@ -62,9 +61,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mapFragment.getMapAsync(this);
 
 
-        mLocationRequest.setInterval(10000);
-        mLocationRequest.setFastestInterval(5000);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
 
         viewModel = ViewModelProviders.of(this).get(MapViewModel.class);
@@ -114,23 +110,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private void getLastPosition() {
         Log.d(TAG, "getLastPosition: ");
         if (checkLocationPermission(getContext())){
-            Log.d(TAG, "getLastPosition: check self permission passed");
             mFusedLocationClient.getLastLocation()
                     .addOnSuccessListener(new OnSuccessListener<Location>() {
                         @Override
                         public void onSuccess(Location location) {
-                            Log.d(TAG, "onSuccess: but location is null");
                             // Got last known location. In some rare situations this can be null.
                             if (location != null) {
                                 Log.d(TAG, "onSuccess: " + location);
                                 // Logic to handle location object
                                 if (checkLocationPermission(getContext()))
                                 googleMap.setMyLocationEnabled(true);
+                            }else {
+                                Log.d(TAG, "onSuccess: but location is null");
                             }
                         }
                     });
         } else {
-            Log.d(TAG, "getLastPosition: check self permission NOT passed");
             requestPermission();
         }
 
