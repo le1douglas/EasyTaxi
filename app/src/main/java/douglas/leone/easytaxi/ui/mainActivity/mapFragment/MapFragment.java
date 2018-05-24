@@ -1,7 +1,6 @@
 package douglas.leone.easytaxi.ui.mainActivity.mapFragment;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -19,16 +18,10 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import androidx.navigation.Navigation;
@@ -42,10 +35,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap googleMap;
     private FusedLocationProviderClient mFusedLocationClient;
 
+    private static boolean checkLocationPermission(Context context) {
+        boolean result;
+        result = ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        Log.d(TAG, "checkLocationPermission: " + result);
+
+        return result;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_map, container, false);
     }
 
@@ -57,10 +60,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
 
         //Set up the map fragment
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-
-
+        if (googleMap == null) {
+            SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+            mapFragment.getMapAsync(this);
+        }
 
 
         viewModel = ViewModelProviders.of(this).get(MapViewModel.class);
@@ -81,7 +84,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         googleMap = map;
         getLastPosition();
     }
-
 
     private void requestPermission() {
         Log.d(TAG, "requestPermission: ");
@@ -109,7 +111,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private void getLastPosition() {
         Log.d(TAG, "getLastPosition: ");
-        if (checkLocationPermission(getContext())){
+        if (checkLocationPermission(getContext())) {
             mFusedLocationClient.getLastLocation()
                     .addOnSuccessListener(new OnSuccessListener<Location>() {
                         @Override
@@ -119,8 +121,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                 Log.d(TAG, "onSuccess: " + location);
                                 // Logic to handle location object
                                 if (checkLocationPermission(getContext()))
-                                googleMap.setMyLocationEnabled(true);
-                            }else {
+                                    googleMap.setMyLocationEnabled(true);
+                            } else {
                                 Log.d(TAG, "onSuccess: but location is null");
                             }
                         }
@@ -129,14 +131,5 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             requestPermission();
         }
 
-    }
-
-    private static boolean checkLocationPermission(Context context){
-        boolean result;
-        result = ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-        Log.d(TAG, "checkLocationPermission: " + result);
-
-        return result;
     }
 }
