@@ -130,6 +130,7 @@ public class MapViewModel extends AndroidViewModel {
     }
 
     void stopLocationUpdates() {
+        if (locationCallback!=null)
         getFusedLocationProviderClient(getApplication()).removeLocationUpdates(locationCallback);
 
     }

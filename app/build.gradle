@@ -34,6 +34,9 @@ dependencies {
     def nav_version = "1.0.0-alpha01"
     implementation "android.arch.navigation:navigation-fragment:$nav_version"
     implementation "android.arch.navigation:navigation-ui:$nav_version"
+
+    //card
+    implementation 'com.android.support:cardview-v7:27.1.1'
 /*
     //firebase
     implementation 'com.google.firebase:firebase-core:15.0.2'
